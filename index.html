@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QZ Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Control de saldo y gastos</p>
+        <h1>QZ Store</h1>
+        <p class="hero-text">
+          Consulta tu saldo del banco, registra gastos reales sobre la API
+          y acumula Tamalbits cuando compres orejas de pollo.
+        </p>
+      </div>
+      <div class="hero-panel">
+        <p class="hero-panel-label">Estado del sistema</p>
+        <div id="consistencyBadge" class="badge badge-waiting">Sincronizando...</div>
+        <p id="apiMessage" class="hero-panel-note">
+          Esperando conexion con el servicio bank.
+        </p>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span>Saldo actual</span>
+          <strong id="balanceValue">$0.00</strong>
+        </article>
+        <article class="stat-card">
+          <span>Total gastado</span>
+          <strong id="spentValue">$0.00</strong>
+        </article>
+        <article class="stat-card accent-card">
+          <span>Tamalbits acumulados</span>
+          <strong id="tamalbitValue">0</strong>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Productos</p>
+              <h2>Compra algo del menu</h2>
+            </div>
+            <button id="refreshButton" class="secondary-button">Actualizar</button>
+          </div>
+          <div id="productList" class="product-grid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-kicker">Registro manual</p>
+              <h2>Agregar un gasto</h2>
+            </div>
+          </div>
+
+          <form id="expenseForm" class="expense-form">
+            <label>
+              Usuario
+              <input id="userName" name="userName" type="text" placeholder="Ej: Miguel" required>
+            </label>
+
+            <label>
+              Monto
+              <input id="amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+            </label>
+
+            <label>
+              Categoria
+              <select id="category" name="category" required>
+                <option value="Servicios publicos">Servicios publicos</option>
+                <option value="Alimentacion">Alimentacion</option>
+                <option value="Transporte">Transporte</option>
+                <option value="Otros">Otros</option>
+              </select>
+            </label>
+
+            <label>
+              Descripcion
+              <textarea id="description" name="description" rows="3" placeholder="Comentario opcional"></textarea>
+            </label>
+
+            <button class="primary-button" type="submit">Registrar gasto</button>
+          </form>
+        </section>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="section-kicker">Historial</p>
+            <h2>Movimientos recientes</h2>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Usuario</th>
+                <th>Categoria</th>
+                <th>Descripcion</th>
+                <th>Monto</th>
+                <th>Tamalbits</th>
+              </tr>
+            </thead>
+            <tbody id="expenseTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <template id="productCardTemplate">
+    <article class="product-card">
+      <div>
+        <p class="product-category"></p>
+        <h3 class="product-name"></h3>
+      </div>
+      <p class="product-description"></p>
+      <div class="product-footer">
+        <strong class="product-price"></strong>
+        <button class="primary-button buy-button">Comprar</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>

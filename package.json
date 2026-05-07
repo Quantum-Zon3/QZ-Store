@@ -1,0 +1,12 @@
+{
+  "name": "qz-store",
+  "version": "1.0.0",
+  "description": "Aplicacion web para gestionar saldo, gastos y Tamalbits.",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file=.env server.js"
+  },
+  "dependencies": {
+    "mysql2": "^3.22.3"
+  }
+}
