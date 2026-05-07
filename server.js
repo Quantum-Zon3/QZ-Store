@@ -7,17 +7,17 @@ import mysql from "mysql2/promise";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const PORT = Number(process.env.PORT || 3000);
-const BANK_BASE_URL = process.env.BANK_BASE_URL || "http://localhost:8083";
-const BANK_BALANCE_PATH = process.env.BANK_BALANCE_PATH || "/api/balance";
-const BANK_DEBIT_PATH = process.env.BANK_DEBIT_PATH || "/api/balance/debit";
+const PORT = Number(process.env.PORT);
+const BANK_BASE_URL = process.env.BANK_BASE_URL;
+const BANK_BALANCE_PATH = process.env.BANK_BALANCE_PATH;
+const BANK_DEBIT_PATH = process.env.BANK_DEBIT_PATH;
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || "127.0.0.1",
-  port: Number(process.env.DB_PORT || 3306),
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "qz_store",
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -202,8 +202,8 @@ async function getBankBalance() {
   }
 }
 
-async function debitBankBalance(amount) {
-  const payload = JSON.stringify({ amount, monto: amount });
+async function debitBankBalance(amount, reason) {
+  const payload = JSON.stringify({ amount, reason });
 
   try {
     await requestBank(BANK_DEBIT_PATH, {
@@ -376,7 +376,7 @@ async function handleCreateExpense(request, response) {
     return;
   }
 
-  await debitBankBalance(amount).catch((error) => {
+  await debitBankBalance(amount, description).catch((error) => {
     sendJson(response, 502, { error: error.message });
     return null;
   });
