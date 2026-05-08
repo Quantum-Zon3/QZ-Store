@@ -101,6 +101,11 @@ async function initializeDatabase() {
   }
 }
 
+async function resetExpenses() {
+  await pool.query("TRUNCATE TABLE expenses");
+  return { success: true, message: "Gastos reiniciados correctamente." };
+}
+
 function readRequestBody(request) {
   return new Promise((resolve, reject) => {
     let body = "";
@@ -204,7 +209,6 @@ async function getBankBalance() {
 
 async function debitBankBalance(amount, reason) {
   const payload = JSON.stringify({ amount, reason });
-
   try {
     await requestBank(BANK_DEBIT_PATH, {
       method: "POST",
@@ -440,6 +444,12 @@ const server = createServer(async (request, response) => {
 
     if (request.method === "POST" && request.url === "/api/expenses") {
       await handleCreateExpense(request, response);
+      return;
+    }
+
+    if (request.method === "POST" && request.url === "/api/reset") {
+      const result = await resetExpenses();
+      sendJson(response, 200, result);
       return;
     }
 

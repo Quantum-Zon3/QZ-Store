@@ -98,6 +98,13 @@ function renderDashboard(data) {
   renderExpenses(data.expenses);
 }
 
+async function reset() {
+  await fetch("/api/reset", {
+    method: "POST",
+  });
+  loadDashboard();
+}
+
 async function loadDashboard() {
   try {
     const response = await fetch("/api/dashboard");
@@ -173,10 +180,6 @@ expenseForm.addEventListener("submit", async (event) => {
   }
 });
 
-async function reset() {
-  await PoolConnection.query("TRUNCATE TABLE expenses");
-  
-}
 
 refreshButton.addEventListener("click", loadDashboard);
 
