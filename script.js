@@ -9,6 +9,7 @@ const toast = document.getElementById("toast");
 const refreshButton = document.getElementById("refreshButton");
 const expenseForm = document.getElementById("expenseForm");
 const productCardTemplate = document.getElementById("productCardTemplate");
+const apiBasePath = "./api";
 
 let dashboardState = null;
 
@@ -99,7 +100,7 @@ function renderDashboard(data) {
 }
 
 async function reset() {
-  await fetch("/api/reset", {
+  await fetch(`${apiBasePath}/reset.php`, {
     method: "POST",
   });
   loadDashboard();
@@ -107,7 +108,7 @@ async function reset() {
 
 async function loadDashboard() {
   try {
-    const response = await fetch("/api/dashboard");
+    const response = await fetch(`${apiBasePath}/dashboard.php`);
     const data = await response.json();
 
     if (!response.ok) {
@@ -122,7 +123,7 @@ async function loadDashboard() {
 }
 
 async function sendExpense(payload) {
-  const response = await fetch("/api/expenses", {
+  const response = await fetch(`${apiBasePath}/expenses.php`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
